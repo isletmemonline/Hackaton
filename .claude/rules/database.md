@@ -1,0 +1,2 @@
+# Database rules
+Use migrations for schema changes. A work order has exactly one equipment. Enforce at most one active order per equipment in SQLite, including COMPLETED awaiting final approval. Use separate approval steps and immutable work-order events. Store photo relative paths in DB, JPEG files under data/photos. Keep photo names unique and safely normalized.
