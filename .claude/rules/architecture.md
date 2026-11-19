@@ -1,0 +1,2 @@
+# Architecture rules
+Read PRD.md and docs/ARCHITECTURE.md first. Mobile and web use only the Python API. Python owns state transitions, assignment, access control and audit. SQLite is not exposed to clients. Keep one work order per equipment active using a partial unique index and transactional writes. No inventory movement logic.
