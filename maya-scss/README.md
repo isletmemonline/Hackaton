@@ -1,0 +1,2 @@
+# Maya SCSS
+Placeholder only. User will supply the corporate Maya SCSS folder. Do not invent brand colors, fonts or styling tokens. Backoffice uses compatible SCSS/CSS; mobile adapts supplied tokens to React Native.
