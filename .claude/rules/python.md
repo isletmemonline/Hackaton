@@ -1,0 +1,2 @@
+# Python rules
+Separate API routes, domain services, repositories and schemas. Validate inputs at API boundary. Use explicit SQLite transactions for work order creation and review. Enforce idempotency and role/customer/team scope. Keep database queries parameterized. Test every state transition.
