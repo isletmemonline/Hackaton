@@ -1,0 +1,2 @@
+# TypeScript rules
+Use strict TypeScript for Expo and Next.js. Define typed request/response DTOs aligned with docs/API-CONTRACT.md. Do not duplicate backend authorization or business-state decisions in clients. Handle loading, empty, error and duplicate-submit states.
