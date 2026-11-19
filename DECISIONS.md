@@ -1,0 +1,13 @@
+# Confirmed decisions
+- Two-day hackathon; documentation first, implementation only after approval.
+- Expo/React Native TypeScript mobile; Next.js TypeScript Backoffice; Python HTTP API; SQLite.
+- ST alone creates INS/REP/REM work orders for own customers; exactly one equipment per order.
+- One active work order per equipment, including completed but pending approval.
+- Auto-assign the sole demo technician at creation; future routing by region.
+- Initial SSM approval required before technician work.
+- Technician completes with at least one photo and nonblank explanation, immutable thereafter.
+- ST completion approval precedes final SSM approval and closure.
+- Rejection at any of three approval stages immediately CANCELLED with mandatory reason.
+- ST may cancel before initial approval; orders are not editable.
+- No inventory tracking. No real authentication in trusted demo; backend still checks role and scope.
+- Photos in data/photos, DB at data/asset.sqlite; maya-scss/ pending user files.
