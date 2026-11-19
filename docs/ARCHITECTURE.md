@@ -1,0 +1,2 @@
+# Architecture
+Expo React Native TypeScript mobile and Next.js TypeScript Backoffice both consume a Python HTTP API. API implements all business rules, identity/role checks, work-order state machine, region assignment policy, photo validation and audit. SQLite data/asset.sqlite is private to backend; data/photos contains uploaded JPEGs. Demo identity selection is not production authentication. No Supabase or direct database access from clients. maya-scss is authoritative for design tokens when supplied. Use API DTOs aligned with API-CONTRACT.md.
