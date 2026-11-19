@@ -1,5 +1,5 @@
 # Asset MVP — Product Requirements Document
-Version: 1.0 | 19 November 2026 | Two-day hackathon
+Version: 1.1 | 19 November 2026 | Two-day hackathon
 
 ## Goal
 Manage one-equipment installation (INS), repair (REP), and removal (REM) work orders through ST, SSM, and technician roles, using mobile and backoffice clients.
@@ -12,18 +12,22 @@ Manage one-equipment installation (INS), repair (REP), and removal (REM) work or
 - `maya-scss/` is the authoritative styling source. Its contents will be supplied later. Do not invent brand colors, typography, or component standards; adapt source tokens to React Native.
 
 ## Roles and access
-- Only ST creates work orders for customers in their scope.
-- SSM approves/rejects orders belonging to their ST team, both initially and finally.
+- Only ST creates work orders for customers assigned to that ST. The selected equipment must belong to the selected customer.
+- The work-order creator ST is the responsible ST and is the only ST permitted to approve/reject technician completion or cancel before initial approval.
+- Initial and final SSM approval/rejection belongs to an SSM authorized for the creator ST's team. Team membership must be verified server-side at decision time.
 - Technician works only on assigned, initially SSM-approved orders.
-- Demo-only identity selection from backend-defined ST, SSM, and technician accounts; no production login. Never trust an arbitrary client-supplied role as authorization. Demo identity mode must not be deployed publicly.
+- The Python API verifies the selected seeded demo identity, its role, team/customer relationship, and the current approval step on every read/write. Client UI filtering is not authorization.
+- Demo-only identity selection from backend-defined ST, SSM, and technician accounts; no production login. Demo identity mode must not be deployed publicly.
 
 ## Work orders
 - One `work_orders` table with type `INS|REP|REM`; optional type-specific detail tables.
 - Exactly one equipment per order.
+- Operational statuses: `OPEN`, `PENDING`, `COMPLETED`, `CLOSED`, `CANCELLED`. `CLOSED` and `CANCELLED` are terminal. Every other status is active.
 - Only one active order per equipment, enforced in API and SQLite with a conditional unique index. Technician completion remains active until final closure or cancellation.
 - Orders cannot be edited after creation.
 - Before initial SSM approval, creator ST may cancel their order and open a new one.
 - All rejections, including initial SSM, ST completion, and final SSM, result in `CANCELLED`; reason required. Preserve immutable event history. Rejected orders are not reopened.
+- Approval stages are separate from operational status. `OPEN` is created awaiting initial SSM review; `PENDING` follows initial SSM approval and permits technician work; `COMPLETED` persists during both completion approvals; final approval sets `CLOSED`.
 
 ## Technician assignment and execution
 - Assign automatically at creation. MVP routes all orders to one seeded technician.
@@ -35,13 +39,14 @@ Manage one-equipment installation (INS), repair (REP), and removal (REM) work or
 - Completion sets operational status `COMPLETED`; approval state tracked separately, without `PENDING_ST_APPROVAL` operational status.
 
 ## Approval workflow
-1. ST creates; backend assigns technician.
-2. SSM initially approves or rejects.
-3. On approval, technician can work and submit mandatory evidence.
-4. ST reviews completion: approve → final SSM review; reject → `CANCELLED`.
-5. Final SSM reviews: approve → terminal closed; reject → `CANCELLED`.
+1. Creator ST creates; backend assigns technician; status `OPEN`.
+2. SSM authorized for the creator ST's team initially approves (`PENDING`) or rejects (`CANCELLED` with mandatory reason).
+3. On approval, assigned technician can work and submit mandatory evidence; status `COMPLETED`.
+4. The creator ST reviews completion: approve → final SSM review, status remains `COMPLETED`; reject → `CANCELLED`.
+5. SSM authorized for the creator ST's team performs final review: approve → `CLOSED`; reject → `CANCELLED`.
 - Approval notes optional; rejection reasons mandatory.
 - All decisions record actor, timestamp, step, reason, and outcome.
+- No step may be skipped or performed twice with conflicting outcomes.
 
 ## Photo storage
 - SQLite at `data/asset.sqlite`; files in sibling directory `data/photos/`.
@@ -63,6 +68,9 @@ Manage one-equipment installation (INS), repair (REP), and removal (REM) work or
 - Payment and unrelated business processes
 
 ## Acceptance checks
+- Only creator ST can review completion or cancel before initial approval; unrelated STs cannot act.
+- SSM outside creator ST's team cannot perform initial/final reviews.
+- ST creation validates assigned customer and equipment/customer relationship.
 - Unauthorized role cannot create, approve, or view out-of-scope orders.
 - Concurrent creation cannot create two active orders for same equipment.
 - Technician cannot complete before initial SSM approval.
@@ -73,7 +81,6 @@ Manage one-equipment installation (INS), repair (REP), and removal (REM) work or
 - No styling assumptions if Maya SCSS contents are absent.
 
 ## Explicit implementation assumptions to validate
-- Final approved operational state named `CLOSED` (name provisional).
-- Initial SSM rejection uses `CANCELLED`, as agreed.
 - Order code format `WO-000123` is illustrative; stable unique code generation required.
 - Demo role selection is a convenience for a local trusted environment, not security authentication.
+- Detailed DTO fields, upload size limits, and error codes remain draft pending API contract review.
