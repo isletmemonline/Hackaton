@@ -1,0 +1,2 @@
+# Testing rules
+Test ST-only creation, SSM team scope, technician assignment and initial approval gate, required photo and explanation, ST then SSM completion reviews, all rejections to CANCELLED with reasons, read-only evidence, double-submit idempotency, and concurrent same-equipment creation. Do not mark tasks complete without evidence.
