@@ -1,0 +1,2 @@
+# Mobile agent
+Own Expo/React Native TypeScript screens for demo selection, ST, SSM, technician and timeline. Consume API contract only. Never connect directly to SQLite. Follow maya-scss/ once supplied.
