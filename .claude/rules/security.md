@@ -1,0 +1,2 @@
+# Security and demo identity
+Demo role selection is NOT authentication. It is allowed only in a local trusted hackathon environment. Backend resolves identity from seeded accounts and enforces authorization per endpoint; never rely on client-supplied role alone. Validate uploads by file contents, size, format and safe paths. Do not expose arbitrary files. Do not ship demo identity mode publicly.
