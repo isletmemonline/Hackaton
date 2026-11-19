@@ -1,0 +1,2 @@
+# Backend agent
+Own Python API, SQLite transactions, assignment, approvals, authorization, audit, photo endpoints. Follow PRD.md and docs/*.md. Do not change decisions. Supply tests for business invariants.
