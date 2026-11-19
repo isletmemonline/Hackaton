@@ -1,0 +1,2 @@
+# Claude Code guidance
+Read DECISIONS.md, PRD.md, docs/WORKFLOWS.md, docs/API-CONTRACT.md, docs/DATA-MODEL.md and docs/ARCHITECTURE.md before coding. Do not start implementation until documentation review is approved. Python API owns authorization, state changes and assignment. SQLite is the sole database. Expo/React Native and Next.js use API only. maya-scss/ is authoritative for visual styling. Never modify the old Supabase system. Run tests for all transitions before claiming completion.
