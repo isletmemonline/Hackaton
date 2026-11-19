@@ -1,0 +1,2 @@
+# Design rules
+maya-scss/ is the sole source of brand design tokens. Inspect actual files before implementing visual design. Use native SCSS/CSS in Backoffice where compatible; adapt tokens for React Native. If the folder contains only placeholder documentation, mark styling blocked and do not invent a palette.
